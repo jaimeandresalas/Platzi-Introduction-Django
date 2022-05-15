@@ -2,14 +2,19 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.http import HttpResponse
+from .models import Question
+from django.shortcuts import get_object_or_404
 
 
 def index(request):
-    return HttpResponse("Estas en la pagina Principal")
+    latest_question_list = Question.objects.all()
+    return render(request, 'polls/index.html', {'latest_question_list': latest_question_list})
 
 
 def detail(request, question_id=None):
-    return HttpResponse(f"Estas viendo la pregunta numero {question_id}")
+    # question = Question.objects.get(id=question_id) Merodo sencillo
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'polls/detail.html', {'question': question})
 
 
 def results(request, question_id=None):
